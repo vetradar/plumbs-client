@@ -36,10 +36,27 @@ const medicationGuideById = plumbs
 
 `yarn`
 
+### Develop
+
+`yarn dev`
+
 ### Build
+
+Build is done through `tsc` and is output into the `lib` directory
 
 `yarn build`
 
 ### Format
 
 `yarn prettier`
+
+### Bundling
+
+Bundling is done through `tsup` and it output into the `dist` directory.
+
+`yarn bundle`
+
+Bundle to:
+
+-   `cjs`
+-   `esm`
