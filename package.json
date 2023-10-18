@@ -2,11 +2,14 @@
     "name": "@vetradar/plumbs",
     "version": "0.0.1",
     "type": "module",
-    "main": "lib/index.js",
-    "types": "lib/index.d.ts",
+    "main": "dist/index.cjs",
+    "module": "dist/index.js",
+    "types": "dist/index.d.ts",
     "license": "MIT",
     "scripts": {
+        "dev": "tsup --watch",
         "build": "tsc",
+        "bundle": "tsup",
         "prettier": "prettier --write \"src/**/*.ts\""
     },
     "dependencies": {
@@ -14,6 +17,22 @@
     },
     "devDependencies": {
         "prettier": "^3.0.3",
+        "tsup": "^7.2.0",
         "typescript": "*"
+    },
+    "tsup": {
+        "entry": [
+            "src/index.ts"
+        ],
+        "splitting": false,
+        "sourcemap": true,
+        "clean": true,
+        "dts": true,
+        "format": [
+            "esm",
+            "cjs"
+        ],
+        "treeshake": true,
+        "minify": true
     }
 }
