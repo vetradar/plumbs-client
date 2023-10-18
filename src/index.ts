@@ -15,14 +15,13 @@ import type {
     PlumbsMedicationGuideResponse,
 } from './types'
 
-export default class PlumbsApi {
+class PlumbsClient {
     private readonly _apiKey: string
     private readonly _baseUrl: string = 'https://api.plumbs.com/api/v2'
     private axios: Axios
 
     /**
-     * VetRadar's NodeJS Plumbs API Client
-     *
+     * Plumbs API Client
      * @param apiKey Your Plumb's API Key
      */
     constructor(apiKey: string) {
@@ -175,3 +174,5 @@ export default class PlumbsApi {
         }
     }
 }
+
+export default PlumbsClient
