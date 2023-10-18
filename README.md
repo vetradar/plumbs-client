@@ -8,7 +8,7 @@ This client provides a wrapper around the Plumb's V2 API
 ## Example Usage
 
 ```js
-const plumbs = new PlumbsApi('api-key')
+const plumbs = new PlumbsClient('api-key')
 
 const autologin = plumbs.auth().autologinLink('https://myapp.com')
 
