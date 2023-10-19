@@ -17,7 +17,7 @@ import type {
 
 class PlumbsClient {
     private readonly _apiKey: string
-    private readonly _baseUrl: string = 'https://api.plumbs.com/api/v2'
+    private readonly _baseUrl: string = 'https://app.plumbs.com/api/v2'
     private axios: Axios
 
     /**
