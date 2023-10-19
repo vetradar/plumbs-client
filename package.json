@@ -15,7 +15,8 @@
         "dev": "tsup --watch",
         "build": "tsc",
         "bundle": "tsup",
-        "prettier": "prettier --write \"src/**/*.ts\""
+        "prettier": "prettier --write \"src/**/*.ts\"",
+        "clean": "rm -rf dist lib"
     },
     "dependencies": {
         "axios": "^1.5.1"
