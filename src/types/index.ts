@@ -121,23 +121,27 @@ export type PlumbsMedicationGuideResponse = {
     /**
      * 	Link to Veterinary Medication Guide with all sections.. You must have dedicated permission to access the content.
      */
-    pdfUrl: string
+    pdfUrl: string | null
     /**
      * 	Link to Veterinary Medication Guide without Prescription Label; No Logo; With Special Instructions. You must have dedicated permission to access the content.
      */
-    pdfUrlNoLabelNoLogoInstructions: string
+    pdfUrlNoLabelNoLogoInstructions: string | null
     /**
      * Link to Veterinary Medication Guide without Prescription Label; No Logo; Without Special Instructions. You must have dedicated permission to access the content.
      */
-    pdfUrlNoLabelNoLogoNoInstructions: string
+    pdfUrlNoLabelNoLogoNoInstructions: string | null
     /**
      * Link to Veterinary Medication Guide without Prescription Label; With Plumb’s Logo; With Special Instructions. You must have dedicated permission to access the content.
      */
-    pdfUrlNoLabelLogoInstructions: string
+    pdfUrlNoLabelLogoInstructions: string | null
     /**
      * Link to Veterinary Medication Guide without Prescription Label; With Plumb’s Logo; Without Special Instructions. You must have dedicated permission to access the content.
      */
-    pdfUrlNoLabelLogoNoInstructions: string
+    pdfUrlNoLabelLogoNoInstructions: string | null
+    /**
+     * The title of the medication guide.
+     */
+    title: string
 }
 
 export type PlumbsMedicationGuideFullResponse =
