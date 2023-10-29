@@ -35,6 +35,7 @@ class PlumbsClient {
             baseURL: this._baseUrl,
             headers: {
                 Authorization: `Api-Key ${this._apiKey}`,
+                "Content-Type": "application/json",
             },
         })
     }
