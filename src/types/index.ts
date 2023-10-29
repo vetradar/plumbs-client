@@ -11,6 +11,10 @@ export type PlumbsGetListOptions = {
      * Results will be limited to titles starting with this value.
      */
     starts_with_letter?: string
+    /**
+     * The format of which the section data will be returned as
+     */
+    section_data_format?: 'html' | 'json'
 }
 
 export type PlumbsPagingListResponse<T> = {
