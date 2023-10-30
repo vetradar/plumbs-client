@@ -37,6 +37,9 @@ class PlumbsClient {
                 Authorization: `Api-Key ${this._apiKey}`,
                 'Content-Type': 'application/json',
             },
+            transformResponse: (data: any) => {
+                return JSON.parse(data)
+            }
         })
     }
 
