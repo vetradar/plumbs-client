@@ -132,3 +132,5 @@ out
 .pnp.*
 
 .idea
+
+example/node_modules
