@@ -60,3 +60,11 @@ Bundle to:
 
 -   `cjs`
 -   `esm`
+
+### Example
+
+`cd example && yarn install`
+
+Edit the `index.ts` file to include your API key
+
+`yarn run dev`
