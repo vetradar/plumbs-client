@@ -15,8 +15,8 @@ const autologin = plumbs.auth().autologinLink('https://myapp.com')
 const algo = plumbs.algorithm().getList()
 const algoById = plumbs.algorithm().getById('algo-id')
 
-const dxtx = plumbs.dxtx().getList()
-const dxtxById = plumbs.dxtx().getById('dxtx-id')
+const dxtx = plumbs.dxTx().getList()
+const dxtxById = plumbs.dxTx().getById('dxtx-id')
 
 const monograph = plumbs.monograph().getList()
 const monographById = plumbs.monograph().getById('monograph-id')
