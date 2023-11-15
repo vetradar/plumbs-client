@@ -4,11 +4,10 @@ import PlumbsClient from "../../src";
 const app = express();
 const port = 3000;
 
-app.get('/', async (req, res) => {
-    const plumbs = new PlumbsClient('');
-    const monographList = await plumbs.monograph().getList();
-    res.send(monographList.data);
-
+app.get('/', async (_, res) => {
+    const plumbs = new PlumbsClient('PuYqYzMB.lIIRuTS3sQ4Y7zZaZkkN3PvKZgMK7oC9')
+    const monographList = await plumbs.monograph().getList()
+    res.send(monographList);
 });
 
 app.listen(port, () => {

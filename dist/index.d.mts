@@ -1,5 +1,3 @@
-import * as axios from 'axios';
-
 type PlumbsGetListOptions = {
     /**
      * A page number within the paginated result set.
@@ -13,10 +11,6 @@ type PlumbsGetListOptions = {
      * Results will be limited to titles starting with this value.
      */
     starts_with_letter?: string;
-    /**
-     * The format of which the section data will be returned as
-     */
-    section_data_format?: 'html' | 'json';
 };
 type PlumbsPagingListResponse<T> = {
     count: number;
@@ -28,6 +22,15 @@ type PlumbsSection = {
     id: string;
     title: string;
     value: string;
+};
+type AuthAutoLoginRequest = {
+    targetUrl: string;
+};
+type MonographFullRequest = {
+    /**
+     * The format of which the section data will be returned as
+     */
+    section_data_format?: 'html' | 'json';
 };
 type AuthAutoLoginResponse = {
     autologinLink: string;
@@ -193,78 +196,75 @@ type PlumbsMedicationGuideFullResponse = PlumbsMedicationGuideResponse & {
 declare class PlumbsClient {
     private readonly _apiKey;
     private readonly _baseUrl;
-    private axios;
-    /**
-     * Plumbs API Client
-     * @param apiKey Your Plumb's API Key
-     */
+    private readonly Fetch;
     constructor(apiKey: string);
     auth(): {
         /**
-         * This integration allows you to sign into Plumb's via your external program and Plumb's Api Key.
-         * @param targetUrl
+         * This integration allows you to log in to Plumb's via your external program and Plumb's Api Key.
+         * @param options
          */
-        autologinLink: (targetUrl: string) => Promise<AuthAutoLoginResponse>;
+        autologinLink: (options: AuthAutoLoginRequest) => Promise<AuthAutoLoginResponse>;
     };
     algorithm(): {
         /**
          * Get algorithm data list with pagination.
          * @param options Optional parameters
          */
-        getList: (options?: PlumbsGetListOptions) => Promise<axios.AxiosResponse<PlumbsPagingListResponse<PlumbsGetListOptions>, any>>;
+        getList: (options?: PlumbsGetListOptions) => Promise<PlumbsPagingListResponse<PlumbsGetListOptions>>;
         /**
          * Get algorithm data for given ID.
          * @param content_id
          */
-        getById: (content_id: string) => Promise<axios.AxiosResponse<PlumbsAlgorithmResponse, any>>;
+        getById: (content_id: string) => Promise<PlumbsAlgorithmResponse>;
     };
-    dxtx(): {
+    dxTx(): {
         /**
          * Get dx & tx data list with pagination.
          * @param options Optional parameters
          */
-        getList: (options?: PlumbsGetListOptions) => Promise<axios.AxiosResponse<PlumbsPagingListResponse<PlumbsDxTxResponse>, any>>;
+        getList: (options?: PlumbsGetListOptions) => Promise<PlumbsPagingListResponse<PlumbsDxTxResponse>>;
         /**
          * Get dx & tx data for given ID.
          * @param content_id
          */
-        getById: (content_id: string) => Promise<axios.AxiosResponse<PlumbsDxTxFullResponse, any>>;
+        getById: (content_id: string) => Promise<PlumbsDxTxFullResponse>;
     };
     monograph(): {
         /**
          * Get monograph data list with pagination.
-         * @param options Optional parameters
+         * @param options
          */
-        getList: (options?: PlumbsGetListOptions) => Promise<axios.AxiosResponse<PlumbsPagingListResponse<PlumbsMonographResponse>, any>>;
+        getList: (options?: PlumbsGetListOptions) => Promise<PlumbsMonographResponse>;
         /**
          * Get monograph data for given ID.
          * @param content_id
+         * @param options
          */
-        getById: (content_id: string) => Promise<axios.AxiosResponse<PlumbsMonographFullResponse, any>>;
+        getById: (content_id: string, options?: MonographFullRequest) => Promise<PlumbsMonographFullResponse>;
     };
     patientGuide(): {
         /**
          * Get patient guide data list with pagination.
          * @param options Optional parameters
          */
-        getList: (options?: PlumbsGetListOptions) => Promise<axios.AxiosResponse<PlumbsPagingListResponse<PlumbsPatientGuideResponse>, any>>;
+        getList: (options?: PlumbsGetListOptions) => Promise<PlumbsPagingListResponse<PlumbsPatientGuideResponse>>;
         /**
          * Get patient guide data for given ID.
          * @param content_id
          */
-        getById: (content_id: string) => Promise<axios.AxiosResponse<PlumbsPatientGuideFullResponse, any>>;
+        getById: (content_id: string) => Promise<PlumbsPatientGuideFullResponse>;
     };
     medicationGuide(): {
         /**
          * Get medication guide data list with pagination.
          * @param options Optional parameters
          */
-        getList: (options?: PlumbsGetListOptions) => Promise<axios.AxiosResponse<PlumbsPagingListResponse<PlumbsMedicationGuideResponse>, any>>;
+        getList: (options?: PlumbsGetListOptions) => Promise<PlumbsPagingListResponse<PlumbsMedicationGuideResponse>>;
         /**
          * Get medication guide data for given ID.
          * @param content_id
          */
-        getById: (content_id: string) => Promise<axios.AxiosResponse<PlumbsMedicationGuideFullResponse, any>>;
+        getById: (content_id: string) => Promise<PlumbsMedicationGuideFullResponse>;
     };
 }
 

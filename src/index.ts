@@ -1,29 +1,31 @@
-import { Axios } from 'axios'
-import type {
+import {
     AuthAutoLoginRequest,
     AuthAutoLoginResponse,
-    PlumbsGetListOptions,
+    MonographFullRequest,
     PlumbsAlgorithmResponse,
-    PlumbsDxTxResponse,
-    PlumbsPagingListResponse,
-    PlumbsMonographResponse,
     PlumbsDxTxFullResponse,
-    PlumbsMonographFullResponse,
-    PlumbsPatientGuideResponse,
-    PlumbsPatientGuideFullResponse,
+    PlumbsDxTxResponse,
+    PlumbsGetListOptions,
     PlumbsMedicationGuideFullResponse,
     PlumbsMedicationGuideResponse,
-} from './types'
+    PlumbsMonographFullResponse,
+    PlumbsMonographResponse,
+    PlumbsPagingListResponse,
+    PlumbsPatientGuideFullResponse,
+    PlumbsPatientGuideResponse
+} from "./types";
+
+const BASE_URL = 'https://app.plumbs.com/api/v2/';
+const DEFAULT_HEADERS = {
+    "Content-Type": "application/json",
+};
+
 
 class PlumbsClient {
     private readonly _apiKey: string
-    private readonly _baseUrl: string = 'https://app.plumbs.com/api/v2'
-    private axios: Axios
+    private readonly _baseUrl: string = BASE_URL
+    private readonly Fetch: (url: string, fetchOptions: any) => Promise<any>
 
-    /**
-     * Plumbs API Client
-     * @param apiKey Your Plumb's API Key
-     */
     constructor(apiKey: string) {
         if (apiKey === undefined || apiKey === null || apiKey === '') {
             throw new Error('API Key is required')
@@ -31,29 +33,40 @@ class PlumbsClient {
 
         this._apiKey = apiKey
 
-        this.axios = new Axios({
-            baseURL: this._baseUrl,
-            headers: {
+        this.Fetch = async(url, fetchOptions) => {
+            const { body: requestBody, params, ...init } = fetchOptions || {};
+            const headers = new Headers({
+                ...DEFAULT_HEADERS,
                 Authorization: `Api-Key ${this._apiKey}`,
-                'Content-Type': 'application/json',
-            },
-            transformResponse: (data: any) => {
-                return JSON.parse(data)
+            });
+
+            // URL
+            let finalURL = `${this._baseUrl}${url}`;
+
+            // check for params and append to URL
+            if (params && Object.keys(params).length > 0) {
+                const paramsObject = Object.keys(params).map(key => key + '=' + encodeURIComponent(params[key])).join('&');
+                finalURL = `${finalURL}?${paramsObject}`;
             }
-        })
+
+            // fetch!
+            const response = await fetch(finalURL, {
+                ...init,
+                headers,
+            });
+
+            return await response.json();
+        };
     }
 
     auth() {
         return {
             /**
-             * This integration allows you to sign into Plumb's via your external program and Plumb's Api Key.
-             * @param targetUrl
+             * This integration allows you to log in to Plumb's via your external program and Plumb's Api Key.
+             * @param options
              */
-            autologinLink: (targetUrl: string) => {
-                return this.axios.post<
-                    AuthAutoLoginRequest,
-                    AuthAutoLoginResponse
-                >('/auth/autologin-link', { targetUrl })
+            autologinLink: (options: AuthAutoLoginRequest): Promise<AuthAutoLoginResponse> => {
+                return this.Fetch('/auth/autologin-link', {...options, method: "GET"} as any);
             },
         }
     }
@@ -64,44 +77,36 @@ class PlumbsClient {
              * Get algorithm data list with pagination.
              * @param options Optional parameters
              */
-            getList: (options?: PlumbsGetListOptions) => {
-                return this.axios.get<
-                    PlumbsPagingListResponse<PlumbsGetListOptions>
-                >('contents/algorithm', { params: options })
+            getList: (options?: PlumbsGetListOptions): Promise<PlumbsPagingListResponse<PlumbsGetListOptions>> => {
+                return this.Fetch('contents/algorithm', { ...options, method: "GET" } as any);
             },
 
             /**
              * Get algorithm data for given ID.
              * @param content_id
              */
-            getById: (content_id: string) => {
-                return this.axios.get<PlumbsAlgorithmResponse>(
-                    `contents/algorithm/${content_id}`,
-                )
+            getById: (content_id: string): Promise<PlumbsAlgorithmResponse> => {
+                return this.Fetch(`contents/algorithm/${content_id}`, { method: "GET" } as any);
             },
         }
     }
 
-    dxtx() {
+    dxTx() {
         return {
             /**
              * Get dx & tx data list with pagination.
              * @param options Optional parameters
              */
-            getList: (options?: PlumbsGetListOptions) => {
-                return this.axios.get<
-                    PlumbsPagingListResponse<PlumbsDxTxResponse>
-                >('contents/clinical-brief/', { params: options })
+            getList: (options?: PlumbsGetListOptions): Promise<PlumbsPagingListResponse<PlumbsDxTxResponse>> => {
+                return this.Fetch('contents/clinical-brief', {...options, method: "GET"} as any);
             },
 
             /**
              * Get dx & tx data for given ID.
              * @param content_id
              */
-            getById: (content_id: string) => {
-                return this.axios.get<PlumbsDxTxFullResponse>(
-                    `contents/clinical-brief/${content_id}`,
-                )
+            getById: (content_id: string): Promise<PlumbsDxTxFullResponse> => {
+                return this.Fetch(`contents/clinical-brief/${content_id}`, { method: "GET" } as any);
             },
         }
     }
@@ -110,22 +115,19 @@ class PlumbsClient {
         return {
             /**
              * Get monograph data list with pagination.
-             * @param options Optional parameters
+             * @param options
              */
-            getList: (options?: PlumbsGetListOptions) => {
-                return this.axios.get<
-                    PlumbsPagingListResponse<PlumbsMonographResponse>
-                >('contents/monograph/', { params: options })
+            getList: (options?: PlumbsGetListOptions): Promise<PlumbsMonographResponse> => {
+                return this.Fetch('contents/monograph', { params: options, method: "GET"} as any);
             },
 
             /**
              * Get monograph data for given ID.
              * @param content_id
+             * @param options
              */
-            getById: (content_id: string) => {
-                return this.axios.get<PlumbsMonographFullResponse>(
-                    `contents/monograph/${content_id}`,
-                )
+            getById: (content_id: string, options?: MonographFullRequest): Promise<PlumbsMonographFullResponse> => {
+                return this.Fetch(`contents/monograph/${content_id}`, { params: options, method: "GET" } as any);
             },
         }
     }
@@ -136,47 +138,37 @@ class PlumbsClient {
              * Get patient guide data list with pagination.
              * @param options Optional parameters
              */
-            getList: (options?: PlumbsGetListOptions) => {
-                return this.axios.get<
-                    PlumbsPagingListResponse<PlumbsPatientGuideResponse>
-                >('contents/patient-guides/', { params: options })
+            getList: (options?: PlumbsGetListOptions): Promise<PlumbsPagingListResponse<PlumbsPatientGuideResponse>> => {
+                return this.Fetch('contents/patient-guides', {...options, method: "GET"} as any);
             },
 
             /**
              * Get patient guide data for given ID.
              * @param content_id
              */
-            getById: (content_id: string) => {
-                return this.axios.get<PlumbsPatientGuideFullResponse>(
-                    `contents/patient-guides/${content_id}`,
-                )
+            getById: (content_id: string): Promise<PlumbsPatientGuideFullResponse> => {
+                return this.Fetch(`contents/patient-guides/${content_id}`, { method: "GET" } as any);
             },
         }
     }
-
     medicationGuide() {
         return {
             /**
              * Get medication guide data list with pagination.
              * @param options Optional parameters
              */
-            getList: (options?: PlumbsGetListOptions) => {
-                return this.axios.get<
-                    PlumbsPagingListResponse<PlumbsMedicationGuideResponse>
-                >('contents/veterinary-medication-guide/', { params: options })
+            getList: (options?: PlumbsGetListOptions): Promise<PlumbsPagingListResponse<PlumbsMedicationGuideResponse>> => {
+                return this.Fetch('contents/veterinary-medication-guide', {...options, method: "GET"} as any);
             },
 
             /**
              * Get medication guide data for given ID.
              * @param content_id
              */
-            getById: (content_id: string) => {
-                return this.axios.get<PlumbsMedicationGuideFullResponse>(
-                    `contents/veterinary-medication-guide/${content_id}`,
-                )
+            getById: (content_id: string): Promise<PlumbsMedicationGuideFullResponse> => {
+                return this.Fetch(`contents/veterinary-medication-guide/${content_id}`, { method: "GET" } as any);
             },
         }
     }
 }
-
-export default PlumbsClient
+export default PlumbsClient;
