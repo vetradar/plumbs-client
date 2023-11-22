@@ -1,5 +1,7 @@
 .*
 examples/node_modules
 examples/dist
+example/yarn.lock
 node_modules
 lib
+yarn.lock
