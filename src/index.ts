@@ -117,7 +117,7 @@ class PlumbsClient {
              * Get monograph data list with pagination.
              * @param options
              */
-            getList: (options?: PlumbsGetListOptions): Promise<PlumbsMonographResponse> => {
+            getList: (options?: PlumbsGetListOptions): Promise<PlumbsPagingListResponse<PlumbsMonographResponse>> => {
                 return this.Fetch('contents/monograph', { params: options, method: "GET"} as any);
             },
 
