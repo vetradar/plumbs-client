@@ -234,7 +234,7 @@ declare class PlumbsClient {
          * Get monograph data list with pagination.
          * @param options
          */
-        getList: (options?: PlumbsGetListOptions) => Promise<PlumbsMonographResponse>;
+        getList: (options?: PlumbsGetListOptions) => Promise<PlumbsPagingListResponse<PlumbsMonographResponse>>;
         /**
          * Get monograph data for given ID.
          * @param content_id
