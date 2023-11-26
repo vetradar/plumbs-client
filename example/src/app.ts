@@ -1,5 +1,5 @@
 import express from 'express';
-import PlumbsClient from "../../src";
+import PlumbsClient from "../../dist/index.cjs";
 const app = express();
 const port = 3000;
 

@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "tsc && node dist/app.js",
-    "dev": "nodemon src/app.ts"
+    "dev": "nodemon -L src/app.ts"
   },
   "keywords": [],
   "author": "",

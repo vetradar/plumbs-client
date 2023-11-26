@@ -55,7 +55,12 @@ class PlumbsClient {
                 headers,
             });
 
-            return await response.json();
+            if(!response.ok) {
+                const message = `An error has occurred: ${response.statusText}`;
+                throw new Error(message);
+            }
+
+            return response.json();
         };
     }
 
