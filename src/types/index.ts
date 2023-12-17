@@ -36,7 +36,7 @@ export type MonographFullRequest = {
     /**
      * The format of which the section data will be returned as
      */
-    section_data_format?: 'html' | 'json'
+    section_data_format?: 'html' | 'json-text' | 'json-html'
 }
 
 export type AuthAutoLoginResponse = {
