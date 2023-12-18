@@ -197,7 +197,7 @@ declare class PlumbsClient {
     private readonly _apiKey;
     private readonly _baseUrl;
     private readonly Fetch;
-    constructor(apiKey: string);
+    constructor(apiKey?: string);
     auth(): {
         /**
          * This integration allows you to log in to Plumb's via your external program and Plumb's Api Key.

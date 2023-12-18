@@ -26,12 +26,12 @@ class PlumbsClient {
     private readonly _baseUrl: string = BASE_URL
     private readonly Fetch: (url: string, fetchOptions: any) => Promise<any>
 
-    constructor(apiKey: string) {
-        if (apiKey === undefined || apiKey === null || apiKey === '') {
+    constructor(apiKey?: string) {
+        this._apiKey = apiKey ?? process.env.PLUMBS_API_KEY ?? ''
+
+        if (this._apiKey === undefined || this._apiKey === null || this._apiKey === '') {
             throw new Error('API Key is required')
         }
-
-        this._apiKey = apiKey
 
         this.Fetch = async(url, fetchOptions) => {
             const { body: requestBody, params, ...init } = fetchOptions || {};

@@ -34,8 +34,8 @@
         "prettier": "prettier --write \"src/**/*.ts\"",
         "clean": "rm -rf dist lib"
     },
-    "dependencies": {},
     "devDependencies": {
+        "@types/node": "^20.10.5",
         "prettier": "^3.1.0",
         "tsup": "^8.0.1",
         "typescript": "^5.3.2"
